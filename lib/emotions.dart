@@ -17,15 +17,11 @@ class _EmotionsPageState extends State<EmotionsPage> {
       var data = await sentimentService.querySentiment(text);
       setState(() {
         _sentiments = {};
-        int count = 0;
-        while(count < 3) {
-          for (var entry in data) {
-            if (entry['label'] != 'label' && entry['label'] != 'score') {
-              print(entry['label']);
-              print(entry['score']);
-              _sentiments[entry['label']] = entry['score'];
-              count++;
-            }
+        for (var entry in data) {
+          if (entry['label'] != 'label' && entry['label'] != 'score') {
+            // print(entry['label']);
+            // print(entry['score']);
+            _sentiments[entry['label']] = entry['score'];
           }
         }
       });

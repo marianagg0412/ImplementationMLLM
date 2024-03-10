@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
           CheckboxListTile(
-            title: Text('Go to Images Page'),
+            title: Text('Go to Images Model'),
             value: imagePageChecked,
             onChanged: (bool? value) {
               setState(() => imagePageChecked = value!);
