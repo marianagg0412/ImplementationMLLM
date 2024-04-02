@@ -25,7 +25,7 @@ class SentimentService {
 
 
   Future<List<Map<String, dynamic>>> querySentiment(String text) async {
-    var url = Uri.parse('http://127.0.0.1:5000/api/model-1'); //change url
+    var url = Uri.parse('http://172.20.10.11:5000/api/model-1'); //change url
     var response = await http.post(url,
         body: jsonEncode({'inputs': text}), // Encode the body as JSON
         headers: {'Content-Type': 'application/json'});

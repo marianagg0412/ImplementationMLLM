@@ -1,6 +1,8 @@
-import 'dart:typed_data';
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'image_service.dart';
 
 class ImagesPage extends StatefulWidget {
@@ -12,12 +14,14 @@ class ImagesPage extends StatefulWidget {
 
 class _ImagesPageState extends State<ImagesPage> {
   Uint8List? _imageData;
+  final ImagePicker _picker = ImagePicker(); // Use a single ImagePicker instance
   final ImageService _imageService = ImageService();
   List<Map<String, dynamic>>? _analysisResults;
 
   Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await _picker.pickImage(
+      source: await _getPreferredImageSource(), // Determine preferred source dynamically
+    );
 
     if (pickedFile != null) {
       final Uint8List imageData = await pickedFile.readAsBytes();
@@ -25,14 +29,23 @@ class _ImagesPageState extends State<ImagesPage> {
         _imageData = imageData;
       });
 
-      // Extract the file name
+      // Extract the filename (handle potential errors)
       String fileName = pickedFile.name;
 
-      // Pass both imageData and fileName to the service
+      // Pass both imageData and fileName to the service for analysis
       List<Map<String, dynamic>>? analysisResults = await _imageService.analyzeImage(imageData, fileName);
       setState(() {
         _analysisResults = analysisResults;
+        print(_analysisResults);
       });
+    }
+  }
+
+  Future<ImageSource> _getPreferredImageSource() async { //Modify so it truly works
+    if (kIsWeb) {
+      return ImageSource.camera;
+    } else {
+      return ImageSource.camera;
     }
   }
 
@@ -42,22 +55,21 @@ class _ImagesPageState extends State<ImagesPage> {
       appBar: AppBar(
         title: const Text('Image Analysis'),
       ),
-      body: Center( // Wrap the Column in a Center widget
+      body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Center children vertically
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (_imageData != null)
               Image.memory(_imageData!, width: 100, height: 100),
             ElevatedButton(
               onPressed: _pickImage,
-              child: const Text('Select Image from Gallery'),
+              child: const Text('Select Image'),
             ),
             if (_analysisResults != null)
-              ..._analysisResults!.map((result) => Text('${result['label']}: ${(result['score'] * 100).toStringAsFixed(2)}%')).toList(),
+              ..._analysisResults!.map((result) => Text('${result['label']}: ${(result['score'] * 100).toStringAsFixed(2)}%')),
           ],
         ),
       ),
     );
   }
-
 }

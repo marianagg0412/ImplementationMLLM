@@ -5,7 +5,7 @@ import 'package:http_parser/http_parser.dart';
 
 class ImageService {
   Future<List<Map<String, dynamic>>?> analyzeImage(Uint8List imageData, String fileName) async {
-    var uri = Uri.parse('http://127.0.0.1:5000/api/model-2');
+    var uri = Uri.parse('http://172.20.10.11:5000/api/model-2');
     var request = http.MultipartRequest('POST', uri);
     request.files.add(http.MultipartFile.fromBytes(
       'file',
@@ -18,8 +18,8 @@ class ImageService {
 
     if (response.statusCode == 200) {
       var responseData = await response.stream.bytesToString();
-      List<dynamic> jsonResponse = jsonDecode(responseData);
-      return firstUntilPercentage(jsonResponse, 0.90); // Assuming a target percentage of 90%
+      List<dynamic> jsonResponse = jsonDecode(responseData);  
+      return firstUntilPercentage(jsonResponse, 0.80); // Assuming a target percentage of 90%
     } else {
       print(response.statusCode);
       return null;
@@ -34,10 +34,13 @@ class ImageService {
       Map<String, dynamic> elementMap = element as Map<String, dynamic>;
       double contribution = elementMap['score'];
       if ((currentPercentage + contribution) > targetPercentage && resultList.isNotEmpty) {
-        break;
+        // If adding this element's score would exceed the target, skip adding it.
+        continue;
       }
-      currentPercentage += contribution;
-      resultList.add(elementMap);
+      if(contribution > 0.20) {
+        currentPercentage += contribution;
+        resultList.add(elementMap);
+      }
     }
     return resultList;
   }
