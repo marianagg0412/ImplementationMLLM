@@ -6,7 +6,6 @@ class SentimentService {
   List<Map<String, dynamic>> firstUntilPercentage(List<dynamic> nestedList, double targetPercentage) {
     double currentPercentage = 0.0;
     List<Map<String, dynamic>> resultList = [];
-
     for (var element in nestedList) {
       Map<String, dynamic> elementMap = element as Map<String, dynamic>;
       double contribution = elementMap['score'];
@@ -25,7 +24,7 @@ class SentimentService {
 
 
   Future<List<Map<String, dynamic>>> querySentiment(String text) async {
-    var url = Uri.parse('http://172.20.10.11:5000/api/model-1'); //change url
+    var url = Uri.parse('http://192.168.0.183:5000/api/model-1'); //change url
     var response = await http.post(url,
         body: jsonEncode({'inputs': text}), // Encode the body as JSON
         headers: {'Content-Type': 'application/json'});

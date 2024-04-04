@@ -18,9 +18,9 @@ class _ImagesPageState extends State<ImagesPage> {
   final ImageService _imageService = ImageService();
   List<Map<String, dynamic>>? _analysisResults;
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImage(ImageSource source) async {
     final XFile? pickedFile = await _picker.pickImage(
-      source: await _getPreferredImageSource(), // Determine preferred source dynamically
+      source: source,
     );
 
     if (pickedFile != null) {
@@ -41,14 +41,6 @@ class _ImagesPageState extends State<ImagesPage> {
     }
   }
 
-  Future<ImageSource> _getPreferredImageSource() async { //Modify so it truly works
-    if (kIsWeb) {
-      return ImageSource.camera;
-    } else {
-      return ImageSource.camera;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,10 +53,29 @@ class _ImagesPageState extends State<ImagesPage> {
           children: [
             if (_imageData != null)
               Image.memory(_imageData!, width: 100, height: 100),
-            ElevatedButton(
-              onPressed: _pickImage,
-              child: const Text('Select Image'),
-            ),
+            if (!kIsWeb) ...[
+              // Only show buttons on mobile platforms
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => _pickImage(ImageSource.camera),
+                    child: const Text('Open Camera'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () => _pickImage(ImageSource.gallery),
+                    child: const Text('Open Gallery'),
+                  ),
+                ],
+              ),
+            ] else ...[
+              // Only show gallery button on web
+              ElevatedButton(
+                onPressed: () => _pickImage(ImageSource.gallery),
+                child: const Text('Open Gallery'),
+              ),
+            ],
             if (_analysisResults != null)
               ..._analysisResults!.map((result) => Text('${result['label']}: ${(result['score'] * 100).toStringAsFixed(2)}%')),
           ],
