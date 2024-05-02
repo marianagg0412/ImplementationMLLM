@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'SearchEntry.dart';
 import 'image_service.dart';
+
+
 
 class ImagesPage extends StatefulWidget {
   const ImagesPage({super.key});
@@ -17,7 +19,8 @@ class _ImagesPageState extends State<ImagesPage> {
   final ImagePicker _picker = ImagePicker(); // Use a single ImagePicker instance
   final ImageService _imageService = ImageService();
   List<Map<String, dynamic>>? _analysisResults;
-
+// Add a variable to hold the search history
+  List<SearchEntry> searchHistory = [];
   Future<void> _pickImage(ImageSource source) async {
     final XFile? pickedFile = await _picker.pickImage(
       source: source,
@@ -36,10 +39,22 @@ class _ImagesPageState extends State<ImagesPage> {
       List<Map<String, dynamic>>? analysisResults = await _imageService.analyzeImage(imageData, fileName);
       setState(() {
         _analysisResults = analysisResults;
-        print(_analysisResults);
+  
+           // Save search to history after successful analysis
+      SearchEntry entry = SearchEntry("images", fileName, DateTime.now(), _analysisResults ?? [], label: _analysisResults?[0]['label'], score: _analysisResults?[0]['score']);
+      saveSearch(entry);
+  // Actualizar la interfaz de usuario para mostrar el historial actualizado
+      _updateSearchHistory();
       });
     }
   }
+  void _updateSearchHistory() async {
+  // Obtener el historial actualizado
+  List<SearchEntry> updatedHistory = await getHistory();
+  setState(() {
+    searchHistory = updatedHistory;
+  });
+}
 
   @override
   Widget build(BuildContext context) {

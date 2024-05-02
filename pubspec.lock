@@ -69,10 +69,17 @@ packages:
     dependency: transitive
     description:
       name: ffi
+<<<<<<< Updated upstream
       sha256: "493f37e7df1804778ff3a53bd691d8692ddf69702cf4c1c1096a2e41b4779e21"
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+=======
+      sha256: "7bf0adc28a23d395f19f3f1eb21dd7cfd1dd9f8e1c50051c069122e6853bc878"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+>>>>>>> Stashed changes
   file:
     dependency: transitive
     description:
@@ -295,7 +302,11 @@ packages:
       sha256: "087ce49c3f0dc39180befefc60fdb4acd8f8620e5682fe2476afd0b3688bb4af"
       url: "https://pub.dev"
     source: hosted
+<<<<<<< Updated upstream
     version: "1.9.0"
+=======
+    version: "1.8.3"
+>>>>>>> Stashed changes
   path_provider_linux:
     dependency: transitive
     description:
@@ -348,10 +359,17 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
+<<<<<<< Updated upstream
       sha256: "1ee8bf911094a1b592de7ab29add6f826a7331fb854273d55918693d5364a1f2"
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
+=======
+      sha256: "8568a389334b6e83415b6aae55378e158fbc2314e074983362d20c562780fb06"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
+>>>>>>> Stashed changes
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -481,10 +499,17 @@ packages:
     dependency: transitive
     description:
       name: win32
+<<<<<<< Updated upstream
       sha256: "0eaf06e3446824099858367950a813472af675116bf63f008a4c2a75ae13e9cb"
       url: "https://pub.dev"
     source: hosted
     version: "5.5.0"
+=======
+      sha256: "464f5674532865248444b4c3daca12bd9bf2d7c47f759ce2617986e7229494a8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.0"
+>>>>>>> Stashed changes
   xdg_directories:
     dependency: transitive
     description:
@@ -494,5 +519,9 @@ packages:
     source: hosted
     version: "1.0.4"
 sdks:
+<<<<<<< Updated upstream
   dart: ">=3.3.0 <4.0.0"
+=======
+  dart: ">=3.2.6 <4.0.0"
+>>>>>>> Stashed changes
   flutter: ">=3.16.0"

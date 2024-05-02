@@ -5,7 +5,11 @@ import 'package:http_parser/http_parser.dart';
 
 class ImageService {
   Future<List<Map<String, dynamic>>?> analyzeImage(Uint8List imageData, String fileName) async {
+<<<<<<< Updated upstream
     var uri = Uri.parse('http://192.168.1.241:5000/api/model-2');
+=======
+    var uri = Uri.parse('http://192.168.1.2:5000/api/model-2');
+>>>>>>> Stashed changes
     var request = http.MultipartRequest('POST', uri);
     request.files.add(http.MultipartFile.fromBytes(
       'file',
