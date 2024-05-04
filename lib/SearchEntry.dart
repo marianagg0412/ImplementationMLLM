@@ -18,6 +18,8 @@ class SearchEntry {
     'text': text,
     'date': date.toIso8601String(),
     'results': results,
+    'label': label, // Include label in JSON
+    'score': score, // Include score in JSON
   };
 
   // Convert from JSON (handling potential errors)
@@ -28,6 +30,8 @@ class SearchEntry {
         json['text'],
         DateTime.parse(json['date']),
         json['results']?.cast<Map<String, dynamic>>() ?? [],
+        label: json['label'], // Retrieve label from JSON
+        score: json['score'], // Retrieve score from JSON
       );
     } catch (error) {
       print("Error parsing SearchEntry: $error");

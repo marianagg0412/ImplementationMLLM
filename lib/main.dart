@@ -99,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
  // New widget to display search history
+// Widget para mostrar el historial de búsqueda
 class SearchHistory extends StatefulWidget {
   const SearchHistory({Key? key, required this.searchHistory}) : super(key: key);
 
@@ -134,7 +135,7 @@ class _SearchHistoryState extends State<SearchHistory> {
               itemBuilder: (context, index) {
                 SearchEntry entry = _currentHistory[index];
                 return ListTile(
-                  title: Text('${entry.text} - ${entry.label} (${entry.score})'), // Display search text, label, and score
+                  title: Text('${entry.text} - ${entry.label ?? "No Label"} (${entry.score ?? 0.0})'), // Display search text, label, and score
                   subtitle: Text('${entry.type} - ${entry.date.toString()}'),
                 );
               },
