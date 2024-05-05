@@ -24,22 +24,29 @@ class SentimentService {
 
 
   Future<List<Map<String, dynamic>>> querySentiment(String text) async {
-    var url = Uri.parse('http://192.168.1.3:5000/api/model-1'); //change url
+    var url = Uri.parse('http://192.168.1.241:5000/api/model-1'); // Change URL as needed
     var response = await http.post(url,
         body: jsonEncode({'inputs': text}), // Encode the body as JSON
         headers: {'Content-Type': 'application/json'});
 
     if (response.statusCode == 200) {
-      var list = jsonDecode(response.body) as List;
+      // Decode the response body
+      var responseBody = jsonDecode(response.body);
+
+      // The response is a list containing a single list of maps
+      // So, we need to extract the inner list
+      var nestedList = responseBody[0] as List;
+
+    if (nestedList.isEmpty) {
+      throw Exception('Nested list is null or empty');
+    }
+      // Now, you can pass this nestedList to your firstUntilPercentage method
       double targetPercentage = 0.95;
-      var nestedList = list[0] as List;
-      //print(nestedList);
-      List<Map<String, dynamic>> firstThree =
-      firstUntilPercentage(nestedList, targetPercentage);
-      //print(firstThree);
+      List<Map<String, dynamic>> firstThree = firstUntilPercentage(nestedList, targetPercentage);
       return firstThree;
     } else {
       throw Exception('Failed to query API: ${response.statusCode}');
     }
   }
+
 }

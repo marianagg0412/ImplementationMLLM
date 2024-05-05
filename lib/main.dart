@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
  // New widget to display search history
 // Widget para mostrar el historial de búsqueda
 class SearchHistory extends StatefulWidget {
-  const SearchHistory({Key? key, required this.searchHistory}) : super(key: key);
+  const SearchHistory({super.key, required this.searchHistory});
 
   final List<SearchEntry> searchHistory;
 

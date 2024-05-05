@@ -21,7 +21,8 @@ class _ImagesPageState extends State<ImagesPage> {
   List<Map<String, dynamic>>? _analysisResults;
 // Add a variable to hold the search history
   List<SearchEntry> searchHistory = [];
-  Future<void> _pickImage(ImageSource source) async {
+Future<void> _pickImage(ImageSource source) async {
+  try {
     final XFile? pickedFile = await _picker.pickImage(
       source: source,
     );
@@ -32,22 +33,29 @@ class _ImagesPageState extends State<ImagesPage> {
         _imageData = imageData;
       });
 
-      // Extract the filename (handle potential errors)
       String fileName = pickedFile.name;
 
-      // Pass both imageData and fileName to the service for analysis
       List<Map<String, dynamic>>? analysisResults = await _imageService.analyzeImage(imageData, fileName);
-      setState(() {
-        _analysisResults = analysisResults;
-  
-           // Save search to history after successful analysis
-      SearchEntry entry = SearchEntry("images", fileName, DateTime.now(), _analysisResults ?? [], label: _analysisResults?[0]['label'], score: _analysisResults?[0]['score']);
-      saveSearch(entry);
-  // Actualizar la interfaz de usuario para mostrar el historial actualizado
-      _updateSearchHistory();
-      });
+      
+      if (analysisResults != null && analysisResults.isNotEmpty) {
+        setState(() {
+          _analysisResults = analysisResults;
+          // Save search to history after successful analysis
+          SearchEntry entry = SearchEntry("images", fileName, DateTime.now(), _analysisResults ?? [], label: _analysisResults?[0]['label'], score: _analysisResults?[0]['score']);
+          saveSearch(entry);
+          // Actualizar la interfaz de usuario para mostrar el historial actualizado
+          _updateSearchHistory();
+        });
+      } else {
+        print('No analysis results found');
+      }
     }
+  } catch (e) {
+    print('Error picking image: $e');
   }
+}
+
+
   void _updateSearchHistory() async {
   // Obtener el historial actualizado
   List<SearchEntry> updatedHistory = await getHistory();
