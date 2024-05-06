@@ -33,14 +33,23 @@ class SentimentService {
       // Decode the response body
       var responseBody = jsonDecode(response.body);
 
-      // The response is a list containing a single list of maps
-      // So, we need to extract the inner list
+      print('Response body: $responseBody');
+
+      // Check if the response body is null
+      if (responseBody == null) {
+        print('Response body is null, returning empty list');
+        return [];
+      }
+
       var nestedList = responseBody[0] as List;
 
-    if (nestedList.isEmpty) {
-      throw Exception('Nested list is null or empty');
-    }
-      // Now, you can pass this nestedList to your firstUntilPercentage method
+      print('Nested list: $nestedList');
+
+      // Check if the nested list is null or empty
+      if (nestedList.isEmpty) {
+        throw Exception('Nested list is null or empty');
+      }
+
       double targetPercentage = 0.95;
       List<Map<String, dynamic>> firstThree = firstUntilPercentage(nestedList, targetPercentage);
       return firstThree;

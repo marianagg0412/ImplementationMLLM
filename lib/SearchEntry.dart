@@ -49,9 +49,9 @@ Future<List<SearchEntry>> getHistory() async {
 
   try {
     searchHistory = historyJson.map((entry) => SearchEntry.fromJson(jsonDecode(entry))).toList();
-    print("Search History:");
+    //print("Search History:");
     searchHistory.forEach((entry) {
-      print("Type: ${entry.type}, Text: ${entry.text}, Date: ${entry.date}, Label: ${entry.label}, Score: ${entry.score}");
+      //print("Type: ${entry.type}, Text: ${entry.text}, Date: ${entry.date}, Label: ${entry.label}, Score: ${entry.score}");
     });
   } catch (error) {
     print("Error decoding history: $error");
