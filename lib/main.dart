@@ -130,15 +130,35 @@ class _SearchHistoryState extends State<SearchHistory> {
     return Scaffold(
       appBar: AppBar(title: const Text("Search History")),
       body: _currentHistory.isNotEmpty
-          ? ListView.builder(
-              itemCount: _currentHistory.length,
-              itemBuilder: (context, index) {
-                SearchEntry entry = _currentHistory[index];
-                return ListTile(
-                  title: Text('${entry.text} - ${entry.label ?? "No Label"} (${entry.score ?? 0.0})'), // Display search text, label, and score
-                  subtitle: Text('${entry.type} - ${entry.date.toString()}'),
-                );
-              },
+          ? SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width,
+                    minHeight: MediaQuery.of(context).size.height,
+                  ),
+                  child: DataTable(
+                    columns:const [
+                      DataColumn(label: Text('Type')),
+                      DataColumn(label: Text('Text')),
+                      DataColumn(label: Text('Date')),
+                      DataColumn(label: Text('Label')),
+                      DataColumn(label: Text('Score')),
+                    ],
+                    rows: _currentHistory.map((entry) {
+                      return DataRow(cells: [
+                        DataCell(Text(entry.type)),
+                        DataCell(Text(entry.text)),
+                        DataCell(Text(entry.date.toString())),
+                        DataCell(Text(entry.label ?? 'No Label')),
+                        DataCell(Text(entry.score?.toString() ?? 'N/A')),
+                      ]);
+                    }).toList(),
+                  ),
+                ),
+              ),
             )
           : const Center(child: Text('No search history found')),
     );
