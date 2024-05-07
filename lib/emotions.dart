@@ -49,7 +49,7 @@ class _EmotionsPageState extends State<EmotionsPage> {
     
       });
     } else{
-      print("Hello");
+      print("Error present");
     }
   }
 void _updateSearchHistory() async {
